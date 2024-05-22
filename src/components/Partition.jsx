@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import PropTypes from 'prop-types';
 
 const Partition = ({ color, style = {} }) => {
   const [orientation, setOrientation] = useState(null);
@@ -27,40 +28,42 @@ const Partition = ({ color, style = {} }) => {
     setIsRemoved(true);
   };
 
-  const handleMouseDown = (e) => {
-    const startX = e.clientX;
-    const startY = e.clientY;
-    const startSize = size;
+    const handleMouseDown = (e) => {
+        const startX = e.clientX;
+        const startY = e.clientY;
+        const startSize = size;
 
-    const handleMouseMove = (e) => {
-      if (orientation === "vertical") {
-        const delta =
-          ((e.clientX - startX) / containerRef.current.clientWidth) * 100;
-        setSize(Math.min(Math.max(startSize + delta, 0), 100));
-      } else {
-        const delta =
-          ((e.clientY - startY) / containerRef.current.clientHeight) * 100;
-        setSize(Math.min(Math.max(startSize + delta, 0), 100));
-      }
+        const handleMouseMove = (e) => {
+            if (orientation === "vertical") {
+                const delta =
+                    ((e.clientX - startX) / containerRef.current.clientWidth) * 100;
+                setSize(Math.min(Math.max(startSize + delta, 0), 100));
+            } else {
+                const delta =
+                    ((e.clientY - startY) / containerRef.current.clientHeight) * 100;
+                setSize(Math.min(Math.max(startSize + delta, 0), 100));
+            }
+        };
+
+        const handleMouseUp = () => {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+            document.removeEventListener("contextmenu", handleMouseUp);
+            snapToClosest();
+        };
+
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
+        document.addEventListener("contextmenu", handleMouseUp);
     };
 
-    const handleMouseUp = () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      snapToClosest();
+    const snapToClosest = () => {
+        const snapPoints = [25, 50, 75];
+        const closest = snapPoints.reduce((prev, curr) =>
+            Math.abs(curr - size) < Math.abs(prev - size) ? curr : prev
+        );
+        setSize(closest);
     };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-  };
-
-  const snapToClosest = () => {
-    const snapPoints = [25, 50, 75];
-    const closest = snapPoints.reduce((prev, curr) =>
-      Math.abs(curr - size) < Math.abs(prev - size) ? curr : prev
-    );
-    setSize(closest);
-  };
 
   if (isRemoved) {
     return null;
@@ -126,6 +129,12 @@ const Partition = ({ color, style = {} }) => {
       <Partition style={style2} color={color2} />
     </div>
   );
+};
+
+
+Partition.propTypes = {
+  color: PropTypes.string.isRequired,
+  style: PropTypes.object,
 };
 
 export default Partition;

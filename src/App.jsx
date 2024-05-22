@@ -2,35 +2,10 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Link,
-  useLocation,
 } from "react-router-dom";
 import Partition from "./components/Partition";
 import Alphabet from "./components/Alphabet";
-
-const Navigation = () => {
-  const location = useLocation();
-  return location.pathname === "/" ? (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/partition">Partition</Link>
-        </li>
-        <li>
-          <Link to="/alphabet">Alphabet Tile</Link>
-        </li>
-      </ul>
-    </nav>
-  ) : (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Back</Link>
-        </li>
-      </ul>
-    </nav>
-  );
-};
+import Navigation from "./components/Navigation";
 
 const App = () => {
   const initialColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
