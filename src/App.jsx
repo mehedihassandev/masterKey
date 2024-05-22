@@ -6,6 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Partition from "./components/Partition";
+import Alphabet from "./components/Alphabet";
 
 const Navigation = () => {
   const location = useLocation();
@@ -39,7 +40,7 @@ const App = () => {
       <Navigation />
       <Routes>
         <Route path="/partition" element={<Partition color={initialColor} />} />
-        {/* <Route path="/alphabet" element={<Partition color={initialColor} />} /> */}
+        <Route path="/alphabet" element={<Alphabet />} />
       </Routes>
     </Router>
   );
