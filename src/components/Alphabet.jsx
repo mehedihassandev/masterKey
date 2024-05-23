@@ -2,25 +2,38 @@ import { useState } from "react";
 
 const Alphabet = () => {
   const [outputString, setOutputString] = useState("");
+
+  // Create an array of uppercase letters
   const letters = Array.from({ length: 26 }, (_, i) =>
     String.fromCharCode(i + 65)
   );
 
+  // Function to handle click on a letter button (i.e., add the letter to the output string)
   const handleClick = (letter) => {
     setOutputString((prev) => {
+      // Append the clicked letter to the previous string
       const newString = prev + letter;
+
+      // Get the last letter of the new string
       const lastLetter = newString.slice(-1);
+
+      // Count how many times the last letter appears consecutively at the end of the string
       const count = newString
         .split("")
         .reverse()
         .findIndex((char) => char !== lastLetter);
+
+      // If the last letter appears more than 3 times consecutively, replace the last occurrences with underscores (_)
       if (count >= 3) {
         return newString.slice(0, -count) + "_".repeat(count);
       }
+
+      // Otherwise, return the new string as is
       return newString;
     });
   };
 
+  // Function to clear the output string
   const handleClear = () => {
     setOutputString("");
   };

@@ -21,7 +21,7 @@ export const Navigation = () => {
     color: "#007bff",
     padding: "10px",
     borderRadius: "5px",
-    transition: "background-color 0.2s",
+    fontSize: "1.1rem",
   };
 
   const activeLinkStyle = {
